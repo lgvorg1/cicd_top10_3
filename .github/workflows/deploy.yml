@@ -7,6 +7,8 @@ on:
     
 env:
   MY_SECRET: ${{ secrets.MY_SECRET }}
+  GITHUB_PAT: ${{ secrets.GH_PAT }}
+
 
 jobs:
   deploy:

