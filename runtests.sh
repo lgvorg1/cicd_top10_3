@@ -1,3 +1,3 @@
-echo "Executing Tests script" >> runtests.out
+echo "Executing Tests script XXXXXXXXXX" >> runtests.out
 RET=0
 exit $RET
