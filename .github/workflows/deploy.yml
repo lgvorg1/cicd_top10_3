@@ -68,7 +68,7 @@ jobs:
                run_id: context.payload.workflow_run.id,
             });
             let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "archive-dist"
+              return artifact.name == "archive-bin"
             })[0];
             let download = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
