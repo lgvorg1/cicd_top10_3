@@ -26,6 +26,8 @@ jobs:
           mkdir ./bin
           echo "My bin file-1" > ./bin/mybin.exe
           #cp runtests.sh ./bin
+          echo "${{github.event.pull_request.title}}" > ./bin/PR_TITLE.txt
+          echo "${{github.event.number}}" > ./bin/PR_ID.txt
           ls -lR 
 
       
