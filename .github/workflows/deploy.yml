@@ -2,7 +2,7 @@ name: CI Deploy
 
 on:
   workflow_run: 
-    workflows: [ 'Push CI' ]
+    workflows: [ 'PR TARGET CI' ]
     types: [completed]
     
 env:
