@@ -25,6 +25,8 @@ jobs:
         run: |
           mkdir ./bin
           echo "My bin file-1" > ./bin/mybin.exe
+          echo "My bin file-1" > ./bin/mybin.exe 
+          echo "echo Executing Tests script XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" >> ./bin/runtests.sh
           ls -lR 
 
       
