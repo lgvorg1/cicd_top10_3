@@ -17,11 +17,9 @@ jobs:
         run: |
           echo "I am alive"
 
+      # By default, checks out base code (not PR code)
       - name: Checkout repository
         uses: actions/checkout@v4
-
-
-      
 
 
       #- name: Echoing runtests.sh
@@ -83,6 +81,7 @@ jobs:
         run: |
           unzip -o myartifact.zip
           ls -lR
+          cat runtests.sh
 
       # Runs tests
       - name: Running tests ...
