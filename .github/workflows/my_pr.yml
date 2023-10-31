@@ -1,0 +1,23 @@
+name: PR EXTERNAL
+
+on: 
+  pull_request: 
+    branches: [ main ]
+
+env:
+  MY_SECRET: ${{ secrets.MY_SECRET }}
+  
+jobs:
+  build_and_test_and_merge:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Building ... 
+        run: |
+          mkdir -p ./bin
+          echo "My bin file-1" > ./bin/mybin.exe
+          cp runtests.sh ./bin
+          ls -lR 
