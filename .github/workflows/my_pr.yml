@@ -21,3 +21,10 @@ jobs:
           echo "My bin file-1" > ./bin/mybin.exe
           cp runtests.sh ./bin
           ls -lR 
+
+      - name: Archive building artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: archive-bin
+          path: |
+            bin
