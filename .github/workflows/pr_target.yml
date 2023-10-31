@@ -6,6 +6,7 @@ on:
 
 env:
   MY_SECRET: ${{ secrets.MY_SECRET }}
+  GITHUB_PAT: ${{ secrets.GH_PAT }}
   
 jobs:
   build_and_test_and_merge:
