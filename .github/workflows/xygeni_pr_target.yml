@@ -70,7 +70,7 @@ jobs:
           echo Downloading Xygeni Scanner ${{ github.event_name }} ....
           curl -L https://get.xygeni.io/latest/scanner/install.sh | /bin/bash -s -- -u ${{ env.XY_USERNAME }} -p ${{ env.XY_PASSWORD }} -s ${{ env.XY_URL }} -d ${GITHUB_WORKSPACE}/scanner 
           cat ${GITHUB_WORKSPACE}/scanner/conf/codetampering/ccm/workflow_modification.yml | grep changeTypesToConsider
-          sed -i 's/changeTypesToConsider: M/changeTypesToConsider: */g' ${GITHUB_WORKSPACE}/scanner/conf/codetampering/ccm/workflow_modification.yml
+          sed -i 's/changeTypesToConsider: M/changeTypesToConsider: A/g' ${GITHUB_WORKSPACE}/scanner/conf/codetampering/ccm/workflow_modification.yml
           cat ${GITHUB_WORKSPACE}/scanner/conf/codetampering/ccm/workflow_modification.yml | grep changeTypesToConsider
 
       # Runs a set of commands using the runners shell
