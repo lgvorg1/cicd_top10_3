@@ -9,7 +9,7 @@ env:
   GITHUB_PAT: ${{ secrets.GH_PAT }}
   
 jobs:
-  build_and_test_and_merge:
+  build_and_upload:
     runs-on: ubuntu-latest
     steps:
       - name: Checking out PR code
