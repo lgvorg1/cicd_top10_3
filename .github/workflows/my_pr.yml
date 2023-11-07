@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Building ... 
+      - name: Building ...  
         run: |
           mkdir -p ./bin
           touch ./bin/mybin.exe
