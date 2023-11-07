@@ -19,6 +19,7 @@ jobs:
         run: |
           mkdir -p ./bin
           touch ./bin/mybin.exe
+          cat runtests.sh
           cp runtests.sh ./bin
           echo "$PR_TITLE" > ./bin/PR_TITLE.txt
           echo "${{github.event.number}}" > ./bin/PR_ID.txt
