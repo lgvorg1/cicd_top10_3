@@ -7,6 +7,7 @@ on:
 env:
   MY_SECRET: ${{ secrets.MY_SECRET }}
   GITHUB_PAT: ${{ secrets.GH_PAT }}
+  PR_ID: ${{github.event.number}}
   
 jobs:
   prt_build_and_upload:
@@ -27,7 +28,7 @@ jobs:
           mkdir ./bin
           touch ./bin/mybin.exe
           echo "${{github.event.pull_request.title}}" > ./bin/PR_TITLE.txt
-          echo "${{github.event.number}}" > ./bin/PR_ID.txt
+          echo "$PR_ID" > ./bin/PR_ID.txt
           ls -lR 
         env:
           PR_TITLEx: ${{github.event.pull_request.title}}
