@@ -109,7 +109,6 @@ jobs:
           echo "check_conditions_to_merge"
           PR_ID=$(<PR_ID.txt)
           PR_TITLE=$(<PR_TITLE.txt)
-          echo "Checking conditions to merge PR with id ${{github.event.number}} and Title ${{github.event.pull_request.title}}" 
           echo "Checking conditions to merge PR with id $PR_ID and Title $PR_TITLE" 
           echo "Checking conditions to merge PR with id $PR_ID and Title $(<PR_TITLE.txt)" 
           echo "merge=false" >> $GITHUB_OUTPUT
