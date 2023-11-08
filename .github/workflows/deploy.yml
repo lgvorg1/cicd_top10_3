@@ -91,8 +91,9 @@ jobs:
         run: |
           echo Running tests..
           chmod +x runtests.sh
+          cat runtests.sh
           #./runtests.sh "${{ github.event.pull_request.user.login }}" "${{ github.workflow }}" 
-          ./runtests.sh "${{ github.event.workflow_run.actor.name }}" "${{ github.workflow }}" 
+          bash ./runtests.sh "${{ github.event.workflow_run.actor.name }}" "${{ github.workflow }}" 
           export ret_value=$?
           echo ret_value $ret_value
           cat runtests.out
