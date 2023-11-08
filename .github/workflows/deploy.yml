@@ -1,0 +1,151 @@
+name: CI Deploy
+
+on:
+  workflow_run: 
+    workflows: [ 'PR TARGET CI' ]
+    types: [completed]
+    
+env:
+  MY_SECRET: ${{ secrets.MY_SECRET }}
+  GITHUB_PAT: ${{ secrets.GH_PAT }}
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Alive
+        run: |
+          echo "I am alive"
+
+      # By default, checks out base code (not PR code)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+      #- name: Echoing runtests.sh
+      #  run: |
+      #    echo "My run id : ${{ github.event.workflow_run.workflow_id }}"
+      #    ls -lR
+      #    echo echoing runtests.sh ....
+      #    cat runtests.sh
+
+      #- name: download pr atifact
+      #  uses: dawidd6/action-download-artifact@v2
+      #  with:
+      #    workflow: ${{ github.event.workflow_run.workflow_id }}
+      #    path: ./
+          #name: archive-dist
+          #path: path/to/artifact_david
+
+
+      - name: Echoing runtests.sh after downloading artifact
+        run: |
+          ls -lR
+          echo cat runtests.sh
+          cat runtests.sh
+          
+
+
+
+      #- uses: actions/download-artifact@v3
+      #  with:
+      #    name: archive-dist
+      #    path: path/to/artifact
+
+      #- name: Display structure of downloaded files
+      #  run: ls -R
+      #  working-directory: path/to/artifact
+
+      - name: 'Download artifact'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.payload.workflow_run.id,
+            });
+            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "archive-bin"
+            })[0];
+            let download = await github.rest.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            let fs = require('fs');
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/myartifact.zip`, Buffer.from(download.data));
+
+      - name: 'Unzip artifact'
+        run: |
+          unzip -o myartifact.zip
+          ls -lR
+          cat runtests.sh
+
+      # Runs tests
+      - name: Running tests ...
+        id : run_tests
+        run: |
+          echo Running tests..
+          chmod +x runtests.sh
+          cat runtests.sh
+          #./runtests.sh "${{ github.event.pull_request.user.login }}" "${{ github.workflow }}" 
+          bash ./runtests.sh "${{ github.event.workflow_run.actor.name }}" "${{ github.workflow }}" 
+          export ret_value=$?
+          echo ret_value $ret_value
+          cat runtests.out
+          echo Tests executed. 
+          echo "run_tests=OK" >> $GITHUB_OUTPUT
+
+      #
+      # For demo purposes, the check merge condition will always be set to FALSE (avoiding to merge)
+      #
+      - name: pr_check_conditions_to_merge
+        id: check_pr
+        run: |
+          echo "check_conditions_to_merge"
+          PR_ID=$(<PR_ID.txt)
+          PR_TITLE=$(<PR_TITLE.txt)
+          echo "Checking conditions to merge PR with id ${{github.event.number}} and Title ${{github.event.pull_request.title}}" 
+          echo "Checking conditions to merge PR with id $PR_ID and Title $PR_TITLE" 
+          echo "Checking conditions to merge PR with id $PR_ID and Title $(<PR_TITLE.txt)" 
+          echo "merge=false" >> $GITHUB_OUTPUT
+      
+      - name: pr_merge_pr_false
+        if: steps.check_pr.outputs.merge == 'false'
+        run: |
+          echo "The merge check was ${{ steps.check_pr.outputs.merge }}"
+          echo "Merge conditions NOT MEET!!!"
+
+
+      - name: pr_merge_pr_true
+        if: steps.check_pr.outputs.merge == 'true' && steps.run_tests.outputs.run_tests == 'OK'
+        run: |
+          echo "The merge check was ${{ steps.check_pr.outputs.merge }}"
+          echo "Merge conditions successfully MEET!!!"
+          echo "Merging .."
+          curl -L \
+                  -X PUT \
+                  -H "Accept: application/vnd.github+json" \
+                  -H "Authorization: Bearer $GITHUB_PAT" \
+                  -H "X-GitHub-Api-Version: 2022-11-28" \
+                  https://api.github.com/repos/lgvorg1/"${{github.event.repository.name}}"/pulls/"$PR_ID"/merge \
+                  -d '{"commit_title":"Expand enum","commit_message":"Add a new value to the merge_method enum"}'
+       
+
+      #- name: 'Comment on PR'
+      #  uses: actions/github-script@v6
+      #  with:
+      #    github-token: ${{ secrets.GITHUB_TOKEN }}
+      #    script: |
+      #      let fs = require('fs');
+      #      let issue_number = Number(fs.readFileSync('./pr_number'));
+      #      await github.rest.issues.createComment({
+      #        owner: context.repo.owner,
+      #        repo: context.repo.repo,
+      #        issue_number: issue_number,
+      #        body: 'Thank you for the PR!'
+      #      });

