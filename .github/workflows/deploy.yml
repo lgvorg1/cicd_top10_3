@@ -127,6 +127,7 @@ jobs:
           echo "The merge check was ${{ steps.check_pr.outputs.merge }}"
           echo "Merge conditions successfully MEET!!!"
           echo "Merging .."
+          PR_ID=$(<PR_ID.txt)
           curl -L \
                   -X PUT \
                   -H "Accept: application/vnd.github+json" \
