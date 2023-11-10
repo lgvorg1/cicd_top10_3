@@ -1,0 +1,33 @@
+name: PR TARGET CI
+
+on: 
+  pull_request: 
+    branches: [ main ]
+
+env:
+  MY_SECRET: ${{ secrets.MY_SECRET }}
+  
+jobs:
+  my_build_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Building ...  
+        run: |
+          mkdir -p ./bin
+          touch ./bin/mybin.exe
+          cat runtests.sh
+          cp runtests.sh ./bin
+          echo "${{github.event.pull_request.title}}" > ./bin/PR_TITLE.txt
+          echo "${{github.event.number}}" > ./bin/PR_ID.txt
+          ls -lR 
+
+      - name: Archive building artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: archive-bin
+          path: |
+            bin
