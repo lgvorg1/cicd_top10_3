@@ -25,7 +25,7 @@ jobs:
               
       - name: fail step if test file(s) change
         # NOTE: Ensure all outputs are prefixed by the same key used above e.g. `test_(...)` | `doc_(...)` | `src_(...)` when trying to access the `any_changed` output.
-        if: steps.changed-files-yaml.outputs.test_any_changed == 'true'  
+        if: steps.changed-files-yaml.outputs.github_any_changed == 'true'  
         uses: actions/github-script@v3
         with:
           script: |
@@ -33,7 +33,7 @@ jobs:
 
       - name: SUCCESS step if test file(s) does not change
         # NOTE: Ensure all outputs are prefixed by the same key used above e.g. `test_(...)` | `doc_(...)` | `src_(...)` when trying to access the `any_changed` output.
-        if: steps.changed-files-yaml.outputs.test_any_changed == 'false'  
+        if: steps.changed-files-yaml.outputs.github_any_changed == 'false'  
         run: |
           echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
