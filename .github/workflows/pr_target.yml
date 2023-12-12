@@ -29,6 +29,8 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
+            echo "One or more test file(s) has changed."
+            echo "List all the files that have changed: ${{ steps.changed-files-yaml.outputs.github_all_changed_files }}"
             core.setFailed('.github files changed')
 
       - name: SUCCESS step if test file(s) does not change
