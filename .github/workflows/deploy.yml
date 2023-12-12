@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Alive
         run: |
-          echo "I am alive xx"
+          echo "I am alive xxsss"
 
       # By default, checks out base code (not PR code)
       - name: Checkout repository
