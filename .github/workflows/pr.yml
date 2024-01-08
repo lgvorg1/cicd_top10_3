@@ -1,0 +1,19 @@
+name: PR CI
+
+on: 
+  pull_request: 
+    branches: [ main ]
+
+env:
+  MY_SECRET: ${{ secrets.MY_SECRET }}
+  GITHUB_PAT: ${{ secrets.GH_PAT }}
+  PR_ID: ${{github.event.number}}
+  
+jobs:
+    pr-job:
+      name: PR Job 
+      runs-on: ubuntu-latest
+      steps:
+        - name: PR Alive
+          run: |
+            echo "I am PR alive"
