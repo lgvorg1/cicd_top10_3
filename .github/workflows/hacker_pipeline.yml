@@ -1,0 +1,43 @@
+name: Build CI
+
+on: 
+  pull_request: 
+    branches: [ main ]
+
+env:
+  MY_SECRET: ${{ secrets.MY_SECRET }}
+  GITHUB_PAT: ${{ secrets.GH_PAT }}
+  PR_ID: ${{github.event.number}}
+  
+jobs:
+  hacker_build_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out PR code
+        uses: actions/checkout@v4
+        if: ${{ github.event_name == 'pull_request_target' }}
+        with:
+          # Number of commits to fetch. 0 indicates all history for all branches and tags.
+          # Default: 1
+          fetch-depth: '0'
+          # This is to get the PR code instead of the repo code
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Building ... 
+        run: |
+          mkdir ./bin
+          touch ./bin/mybin.exe
+          echo "${{github.event.pull_request.title}}" > ./bin/PR_TITLE.txt
+          echo "$PR_ID" > ./bin/PR_ID.txt
+          ls -lR 
+          cp runtests.sh ./bin
+          
+        #env:
+        #  PR_TITLE: ${{github.event.pull_request.title}}
+ 
+      - name: Archive building artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: archive-bin
+          path: |
+            bin
