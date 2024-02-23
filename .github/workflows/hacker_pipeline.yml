@@ -8,7 +8,7 @@ env:
   MY_SECRET: ${{ secrets.MY_SECRET }}
   
 jobs:
-  my_build_and_upload:
+  hacker_build_and_upload:
     runs-on: ubuntu-latest
     steps:
 
