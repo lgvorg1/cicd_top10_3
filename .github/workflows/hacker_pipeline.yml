@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Checking out PR code
         uses: actions/checkout@v4
-        if: ${{ github.event_name == 'pull_request_target' }}
+        if: ${{ github.event_name == 'pull_request' }}
         with:
           # Number of commits to fetch. 0 indicates all history for all branches and tags.
           # Default: 1
